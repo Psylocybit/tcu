@@ -1,6 +1,6 @@
 //
 //  tcu - Temperature Conversion Utility
-//  main.swift
+//  Temperature.swift
 //
 //  Created by Steven Floyd on 2/9/15.
 //  Copyright (c) 2015 Steven Floyd. All rights reserved.
@@ -201,8 +201,16 @@ struct Temperature {
     
 }
 
+    func print(asUnit unit: TemperatureUnit) {
+        println(self.getString(forUnit: unit))
+    }
+    
+}
+
 prefix func - (temperature: Temperature) -> Temperature {
-    return Temperature(kelvin: -temperature.kelvin)
+    var a = Temperature(kelvin: temperature.kelvin)
+    a.unit = temperature.unit
+    return a
 }
 
 func == (left: Temperature, right: Temperature) -> Bool {
@@ -214,19 +222,27 @@ func != (left: Temperature, right: Temperature) -> Bool {
 }
 
 func += (inout left: Temperature, right: Temperature) {
+    let originalUnit = left.unit
     left.kelvin += right.kelvin
+    left.unit = originalUnit
 }
 
 func -= (inout left: Temperature, right: Temperature) {
+    let originalUnit = left.unit
     left.kelvin -= right.kelvin
+    left.unit = originalUnit
 }
 
 func + (left: Temperature, right: Temperature) -> Temperature {
-    return Temperature(kelvin: left.kelvin + right.kelvin)
+    var a = Temperature(kelvin: left.kelvin + right.kelvin)
+    a.unit = left.unit
+    return a
 }
 
 func - (left: Temperature, right: Temperature) -> Temperature {
-    return Temperature(kelvin: left.kelvin - right.kelvin)
+    var a = Temperature(kelvin: left.kelvin - right.kelvin)
+    a.unit = left.unit
+    return a
 }
 
 extension Int {
@@ -310,5 +326,5 @@ zero.print(asUnit: .Newton)
 zero.print(asUnit: .Rankine)
 zero.print(asUnit: .Réaumur)
 zero.print(asUnit: .Rømer)
-(zero + 100.celcius).print(asUnit: .Celcius)
+(zero + 100.celcius).print() // Should print as celcius, as .unit should == .Celcius.
 assert(100.celcius == (373.15).kelvin, "Failure.")
