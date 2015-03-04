@@ -181,12 +181,15 @@ struct Temperature {
         println(self.string)
     }
 
+<<<<<<< HEAD
     func print(asUnit unit: TemperatureUnit) {
         println(self.getString(forUnit: unit))
     }
 
 }
 
+=======
+>>>>>>> origin/master
 prefix func - (temperature: Temperature) -> Temperature {
     var a = Temperature(kelvin: temperature.kelvin)
     a.unit = temperature.unit
